@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -41,6 +42,16 @@ class Post extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the scraped articles used as sources for this post.
+     *
+     * @return BelongsToMany<ScrapedPost, $this>
+     */
+    public function scrapedPosts(): BelongsToMany
+    {
+        return $this->belongsToMany(ScrapedPost::class, 'post_scraped_post')->withTimestamps();
     }
 
     /**
